@@ -170,12 +170,11 @@ end
 
 local function getAnyToolWithDamageID(isChopAura)
     for toolName, damageID in pairs(toolsDamageIDs) do
-        if isChopAura and toolName ~= "Old Axe" and toolName ~= "Good Axe" and toolName ~= "Strong Axe" then
-            continue
-        end
-        local tool = LocalPlayer:FindFirstChild("Inventory") and LocalPlayer.Inventory:FindFirstChild(toolName)
-        if tool then
-            return tool, damageID
+        if not isChopAura or (toolName == "Old Axe" or toolName == "Good Axe" or toolName == "Strong Axe") then
+            local tool = LocalPlayer:FindFirstChild("Inventory") and LocalPlayer.Inventory:FindFirstChild(toolName)
+            if tool then
+                return tool, damageID
+            end
         end
     end
     return nil, nil
