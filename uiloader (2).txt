@@ -1329,91 +1329,64 @@ function Module:create_multidropdown()
     return Dropdown
 end
 
+
 function Module:create_dropdown()
     local section = self.section == 'left' and left_section
     local list_size = 6
     local open = false
 
     local TweenService = game:GetService("TweenService")
-    local UserInputService = game:GetService("UserInputService")
 
     local optionTemplate = Instance.new("TextButton")
     optionTemplate.Name = "Option"
-    optionTemplate.Active = false
-    optionTemplate.AnchorPoint = Vector2.new(0.5, 0.5)
-    optionTemplate.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     optionTemplate.BackgroundTransparency = 1
-    optionTemplate.BorderSizePixel = 0
-    optionTemplate.Position = UDim2.new(0.47283414, 0, 0.309523821, 0)
-    optionTemplate.Selectable = false
     optionTemplate.Size = UDim2.new(0, 176, 0, 13)
-    optionTemplate.ZIndex = 2
-    optionTemplate.FontFace = Font.new("rbxasset://fonts/families/Montserrat.json", Enum.FontWeight.SemiBold)
+    optionTemplate.Font = Enum.Font.SourceSansSemibold
     optionTemplate.TextColor3 = Color3.fromRGB(255, 255, 255)
-    optionTemplate.TextScaled = true
-    optionTemplate.TextSize = 14
     optionTemplate.TextTransparency = 0.5
-    optionTemplate.TextWrapped = true
     optionTemplate.TextXAlignment = Enum.TextXAlignment.Left
 
     local dropdown = Instance.new("TextButton")
     dropdown.Parent = section
-    dropdown.Name = "Dropdown"
+    dropdown.Size = UDim2.new(0.96, 0, 0, 50)
     dropdown.BackgroundColor3 = Color3.fromRGB(27, 28, 33)
     dropdown.BorderSizePixel = 0
-    dropdown.Size = UDim2.new(0.96, 0, 0, 50)
-    dropdown.AutoButtonColor = false
     dropdown.Text = ""
+    dropdown.AutoButtonColor = false
 
     local UICorner = Instance.new("UICorner")
     UICorner.CornerRadius = UDim.new(0, 10)
     UICorner.Parent = dropdown
 
     local Box = Instance.new("Frame")
-    Box.Name = "Box"
     Box.Parent = dropdown
-    Box.AnchorPoint = Vector2.new(0.5, 0)
     Box.BackgroundColor3 = Color3.fromRGB(22, 23, 27)
-    Box.BorderSizePixel = 0
-    Box.Position = UDim2.new(0.5, 0, 0.15, 0)
     Box.Size = UDim2.new(1, -12, 0, 38)
-    Box.ZIndex = 2
+    Box.Position = UDim2.new(0, 0, 0.15, 0)
+    Box.ClipsDescendants = true
 
     local TextLabel = Instance.new("TextLabel")
     TextLabel.Parent = Box
-    TextLabel.AnchorPoint = Vector2.new(0, 0.5)
+    TextLabel.Size = UDim2.new(0.9, 0, 1, 0)
     TextLabel.BackgroundTransparency = 1
-    TextLabel.Position = UDim2.new(0.03, 0, 0.5, 0)
-    TextLabel.Size = UDim2.new(0, 151, 0, 13)
-    TextLabel.ZIndex = 2
-    TextLabel.FontFace = Font.new("rbxasset://fonts/families/Montserrat.json", Enum.FontWeight.SemiBold)
+    TextLabel.TextXAlignment = Enum.TextXAlignment.Left
     TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
     TextLabel.TextScaled = true
-    TextLabel.TextSize = 14
-    TextLabel.TextWrapped = true
-    TextLabel.TextXAlignment = Enum.TextXAlignment.Left
     TextLabel.Text = self.name
 
     local Arrow = Instance.new("ImageLabel")
-    Arrow.Name = "Arrow"
     Arrow.Parent = Box
-    Arrow.Active = true
-    Arrow.AnchorPoint = Vector2.new(0.5, 0.5)
-    Arrow.BackgroundTransparency = 1
-    Arrow.Position = UDim2.new(0.96, 0, 0.5, 0)
     Arrow.Size = UDim2.new(0, 12, 0, 12)
-    Arrow.ZIndex = 2
+    Arrow.Position = UDim2.new(0.96, 0, 0.5, 0)
+    Arrow.BackgroundTransparency = 1
     Arrow.Image = "rbxassetid://17400678941"
 
     local Options = Instance.new("Frame")
-    Options.Name = "Options"
     Options.Parent = Box
-    Options.AnchorPoint = Vector2.new(0, 0)
-    Options.BackgroundColor3 = Color3.fromRGB(22, 23, 27)
-    Options.BorderSizePixel = 0
-    Options.ClipsDescendants = true
-    Options.Position = UDim2.new(0, 0, 0.76, 0)
     Options.Size = UDim2.new(1, 0, 0, 0)
+    Options.Position = UDim2.new(0, 0, 1, 0)
+    Options.BackgroundColor3 = Color3.fromRGB(22, 23, 27)
+    Options.ClipsDescendants = true
 
     local UIListLayout = Instance.new("UIListLayout")
     UIListLayout.Parent = Options
@@ -1429,22 +1402,21 @@ function Module:create_dropdown()
 
     function Dropdown:open()
         open = true
-        TweenService:Create(Options, TweenInfo.new(0.4), { Size = UDim2.new(1, 0, 0, list_size + 10) }):Play()
-        TweenService:Create(dropdown, TweenInfo.new(0.4), { Size = UDim2.new(BASE_WIDTH, 0, 0, 40 + list_size + 10) }):Play()
-        TweenService:Create(Arrow, TweenInfo.new(0.4), { Rotation = 180 }):Play()
+        TweenService:Create(Options, TweenInfo.new(0.3), { Size = UDim2.new(1, 0, 0, list_size) }):Play()
+        TweenService:Create(dropdown, TweenInfo.new(0.3), { Size = UDim2.new(BASE_WIDTH, 0, 0, CLOSED_HEIGHT + list_size) }):Play()
+        TweenService:Create(Arrow, TweenInfo.new(0.3), { Rotation = 180 }):Play()
     end
 
     function Dropdown:close()
         open = false
-        TweenService:Create(Options, TweenInfo.new(0.4), { Size = UDim2.new(1, 0, 0, 0) }):Play()
-        TweenService:Create(dropdown, TweenInfo.new(0.4), { Size = UDim2.new(BASE_WIDTH, 0, 0, CLOSED_HEIGHT) }):Play()
-        TweenService:Create(Arrow, TweenInfo.new(0.4), { Rotation = 0 }):Play()
+        TweenService:Create(Options, TweenInfo.new(0.3), { Size = UDim2.new(1, 0, 0, 0) }):Play()
+        TweenService:Create(dropdown, TweenInfo.new(0.3), { Size = UDim2.new(BASE_WIDTH, 0, 0, CLOSED_HEIGHT) }):Play()
+        TweenService:Create(Arrow, TweenInfo.new(0.3), { Rotation = 0 }):Play()
     end
 
     function Dropdown:clear()
         for _, obj in Options:GetChildren() do
-            if obj.Name ~= "Option" then continue end
-            obj:Destroy()
+            if obj.Name == "Option" then obj:Destroy() end
         end
     end
 
@@ -1453,21 +1425,11 @@ function Module:create_dropdown()
         list_size = 0
         for _, value in ipairs(self.options) do
             list_size += OPTION_HEIGHT
-
             local new_option = optionTemplate:Clone()
-            new_option.Parent = Options
+            new_option.Name = "Option"
             new_option.Text = value
+            new_option.Parent = Options
             new_option.TextTransparency = (value == self.selectedOption) and 0 or 0.5
-
-            new_option.MouseEnter:Connect(function()
-                TweenService:Create(new_option, TweenInfo.new(0.3), { TextTransparency = 0 }):Play()
-            end)
-
-            new_option.MouseLeave:Connect(function()
-                if new_option.Text ~= self.selectedOption then
-                    TweenService:Create(new_option, TweenInfo.new(0.3), { TextTransparency = 0.5 }):Play()
-                end
-            end)
 
             new_option.Activated:Connect(function()
                 self.selectedOption = value
@@ -1475,14 +1437,13 @@ function Module:create_dropdown()
                 Library.Flags[self.flag] = value
                 self.callback(value)
                 Library.save_flags()
-                -- stays open
             end)
         end
     end
 
     Dropdown:update()
 
-    -- main dropdown toggler
+    -- toggle open/close only via main dropdown button
     dropdown.Activated:Connect(function()
         open = not open
         if open then
@@ -1492,28 +1453,12 @@ function Module:create_dropdown()
         end
     end)
 
-    -- close if click outside
-    UserInputService.InputBegan:Connect(function(input, gameProcessed)
-        if gameProcessed then return end
-        if input.UserInputType ~= Enum.UserInputType.MouseButton1 and input.UserInputType ~= Enum.UserInputType.Touch then return end
-
-        local mousePos = UserInputService:GetMouseLocation()
-        local absPos = dropdown.AbsolutePosition
-        local absSize = dropdown.AbsoluteSize
-
-        if open then
-            -- check if click is outside dropdown
-            if not (mousePos.X >= absPos.X and mousePos.X <= absPos.X + absSize.X and
-                    mousePos.Y >= absPos.Y and mousePos.Y <= absPos.Y + absSize.Y) then
-                Dropdown:close()
-            end
-        end
-    end)
+    Dropdown.options = self.options
+    Dropdown.flag = self.flag
+    Dropdown.callback = self.callback
 
     return Dropdown
 end
-
-
 
 
         function Module:create_textbox()
